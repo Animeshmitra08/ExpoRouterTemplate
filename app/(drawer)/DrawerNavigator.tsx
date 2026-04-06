@@ -1,9 +1,10 @@
 import React from "react";
-import { Alert, Dimensions, StyleSheet, useColorScheme, View } from "react-native";
+import { Alert, Dimensions, StyleSheet, View } from "react-native";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
-import { Avatar, Button, Divider, Text } from "react-native-paper";
+import { Avatar, Button, Divider, Text, useTheme } from "react-native-paper";
 import HomeScreen from "../Screens/HomeScreen";
 import TestScreen from "../Screens/TestScreen";
+import { useAppTheme } from "@/src/types/useAppTheme";
 
 const { width } = Dimensions.get("window");
 
@@ -17,21 +18,23 @@ export type DrawerParamList = {
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
 export default function DrawerNavigator() {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
+  const { colors } = useAppTheme();
 
   return (
     <Drawer.Navigator
       screenOptions={{
         headerShown: true,
         drawerStyle: {
-          backgroundColor: isDark ? "#1c1c1c" : "#ffffff",
+          backgroundColor: colors.drawerBackground,
           width: width * 0.75,
         },
         drawerLabelStyle: {
           fontSize: 15,
           fontWeight: "600",
+          color: colors.drawerText,
         },
+        drawerActiveTintColor: colors.primary,
+        drawerInactiveTintColor: colors.drawerText,
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
@@ -57,27 +60,42 @@ export default function DrawerNavigator() {
 }
 
 function CustomDrawer(props: any) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
+  const { colors } = useAppTheme();
 
-  const getInitials = (email: string) => (email ? email.substring(0, 2).toUpperCase() : "U");
+  const getInitials = (email: string) =>
+    email ? email.substring(0, 2).toUpperCase() : "U";
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
+    <DrawerContentScrollView
+      {...props}
+      contentContainerStyle={[
+        styles.container,
+        { backgroundColor: colors.drawerBackground },
+      ]}
+    >
       {/* Profile Header */}
       <View style={styles.profileContainer}>
         <Avatar.Text
           label={getInitials("animesh@gmail.com")}
           size={64}
           style={{
-            backgroundColor: isDark ? "#3949ab" : "#1e40af",
+            backgroundColor: colors.primary,
           }}
+          color={colors.onPrimary}
         />
+
         <View style={{ marginLeft: 12 }}>
-          <Text variant="titleMedium" style={{ fontWeight: "700", color: isDark ? "#fff" : "#111" }}>
+          <Text
+            variant="titleMedium"
+            style={{ fontWeight: "700", color: colors.drawerText }}
+          >
             Animesh
           </Text>
-          <Text variant="bodySmall" style={{ color: isDark ? "#bbb" : "#555" }}>
+
+          <Text
+            variant="bodySmall"
+            style={{ color: colors.onSurfaceVariant }}
+          >
             animesh@gmail.com
           </Text>
         </View>
@@ -95,16 +113,24 @@ function CustomDrawer(props: any) {
         icon="logout"
         mode="contained"
         onPress={() => Alert.alert("Logout", "You have logged out successfully.")}
-        buttonColor={"#e53935"}
-        textColor="#fff"
+        buttonColor={colors.error}
+        textColor={colors.onError}
         style={styles.logoutButton}
       >
         Logout
       </Button>
 
       {/* Footer */}
-      <Text style={[styles.footerText, { color: isDark ? "#777" : "#666" }]}>
-        © {new Date().getFullYear()} <Text style={{ fontWeight: "bold" }}>AON DIGICON LLP</Text>
+      <Text
+        style={[
+          styles.footerText,
+          { color: colors.onSurfaceVariant },
+        ]}
+      >
+        © {new Date().getFullYear()}{" "}
+        <Text style={{ fontWeight: "bold", color: colors.primary }}>
+          AON DIGICON LLP
+        </Text>
       </Text>
     </DrawerContentScrollView>
   );

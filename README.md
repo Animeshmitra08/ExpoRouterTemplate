@@ -48,3 +48,61 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+
+
+## Dialog Component Documentation
+
+### Overview
+
+DialogComponent is a customizable dialog/modal component built using React Native with support for:
+
+- Multiple positions (top, center, bottom)
+- Animated transitions
+- Configurable actions
+- Custom content rendering
+
+
+### Props
+### Core Props
+
+| Prop        | Type         | Default     | Description                       |
+| ----------- | ------------ | ----------- | --------------------------------- |
+| `visible`   | `boolean`    | —           | Controls dialog visibility        |
+| `title`     | `string`     | `undefined` | Dialog title                      |
+| `children`  | `ReactNode`  | —           | Custom content inside dialog      |
+| `onDismiss` | `() => void` | —           | Callback when dialog is dismissed |
+
+
+### Behavior Props
+
+| Prop                | Type      | Default    | Description                       |
+| ------------------- | --------- | ---------- | --------------------------------- |
+| `dismissable`       | `boolean` | `true`     | Allows closing by tapping outside |
+| `position`          | `top` `center` `bottom`| `center` | Controls dialog placement |
+| `animationDuration` | `number`  | `300`      | Animation timing (ms)             |
+| `loading`           | `boolean` | `false`    | Shows loading state               |
+
+### Styling Props
+
+| Prop                    | Type     | Default | Description             |
+| ----------------------- | -------- | ------- | ----------------------- |
+| `backgroundColor`       | `string` | `#fff`  | Dialog background       |
+| `cornerRadius`          | `number` | `12`    | Border radius           |
+| `contentContainerStyle` | `any`    | —       | Custom container styles |
+
+```tsx
+<DialogComponent    
+    visible={openDialog}
+    title="Welcome to the Home Screen"
+    onDismiss={() => setOpenDialog(false)}
+    dismissable={false}
+    actions={[
+        { label: "OK", onPress: () => setOpenDialog(false) }
+    ]}
+>
+    <Text>This is a dialog component. You can customize it as needed.</Text>
+</DialogComponent>
+```

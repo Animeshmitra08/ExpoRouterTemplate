@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
+import DialogComponent from "@/Components/DialogComponent";
 
 const HomeScreen = () => {
   const theme = useTheme();
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -17,6 +19,23 @@ const HomeScreen = () => {
       <Text style={[styles.subtitle, { color: theme.colors.onBackground }]}>
         Make changes to this screen from app/Screens/HomeScreen.tsx
       </Text>
+
+      <Button mode="contained" onPress={() => setOpenDialog(true)} style={{ marginTop: 20 }}>
+        Open Dialog
+      </Button>
+
+
+      <DialogComponent
+        visible={openDialog}
+        title="Welcome to the Home Screen"
+        onDismiss={() => setOpenDialog(false)}
+        dismissable={false}
+        actions={[
+          { label: "OK", onPress: () => setOpenDialog(false) }
+        ]}
+      >
+        <Text>This is a dialog component. You can customize it as needed.</Text>
+      </DialogComponent>
     </View>
   );
 };
